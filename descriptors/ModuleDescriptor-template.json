@@ -9,9 +9,7 @@
     {
       "id" : "email",
       "version" : "1.1"
-    }
-  ],
-  "optional": [
+    },
     {
       "id" : "batch-print",
       "version" : "1.0"
