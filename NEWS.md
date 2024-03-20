@@ -1,3 +1,7 @@
+## 2024-03-20 v1.12.0
+* Create print channel (MODSENDER-66)
+* Upgrade rmb and vertex version (MODSENDER-68)
+
 ## 2023-10-11 v1.11.0
 * Logging improvement (MODSENDER-48)
 * Update copyright year (FOLIO-1021)
