@@ -14,7 +14,7 @@ complexity, sending queues, persistence of messages, available sending channels 
 REST endpoint - POST /message-delivery for delivering message by using available delivery channels.
 
 **POST /message-delivery**  
-**Required permission:** "sender.message-delivery"
+**Required permission:** "sender.message-delivery.post"
 
 Request body example:
 ```

@@ -18,12 +18,12 @@
   "provides": [
     {
       "id": "message-delivery",
-      "version": "1.0",
+      "version": "1.1",
       "handlers": [
         {
           "methods": ["POST"],
           "pathPattern": "/message-delivery",
-          "permissionsRequired": ["sender.message-delivery"],
+          "permissionsRequired": ["sender.message-delivery.post"],
           "modulePermissions": ["email.message.post", "batch-print.entries.mail.post", "users.item.get" ]
         }
       ]
@@ -31,9 +31,10 @@
   ],
   "permissionSets": [
     {
-      "permissionName": "sender.message-delivery",
+      "permissionName": "sender.message-delivery.post",
       "displayName": "Message delivery",
-      "description": "Send message"
+      "description": "Send message",
+      "replaces": ["sender.message-delivery"]
     }
   ],
   "launchDescriptor": {
