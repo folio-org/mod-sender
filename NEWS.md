@@ -1,3 +1,7 @@
+## 2024-10-31 v1.13.0
+* Upgrade RMB version to V.35.3.0 ([MODSENDER-70](https://folio-org.atlassian.net/browse/MODSENDER-70))
+* Review and cleanup Module Descriptors for mod-sender ([MODSENDER-69](https://folio-org.atlassian.net/browse/MODSENDER-69))
+
 ## 2024-03-20 v1.12.0
 * Create print channel (MODSENDER-66)
 * Upgrade rmb and vertex version (MODSENDER-68)
