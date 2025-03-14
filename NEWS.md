@@ -1,3 +1,6 @@
+## 2025-03-14 v1.2.0
+* Update mod-sender to Java 21([FOLIO-4215](https://folio-org.atlassian.net/browse/FOLIO-4215))
+
 ## 2024-10-31 v1.13.0
 * Upgrade RMB version to V.35.3.0 ([MODSENDER-70](https://folio-org.atlassian.net/browse/MODSENDER-70))
 * Review and cleanup Module Descriptors for mod-sender ([MODSENDER-69](https://folio-org.atlassian.net/browse/MODSENDER-69))

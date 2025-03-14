@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.folio</groupId>
   <artifactId>mod-sender</artifactId>
-  <version>1.13.1-SNAPSHOT</version>
+  <version>1.15.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <licenses>
@@ -22,7 +22,7 @@
     <rest-assured.version>5.5.0</rest-assured.version>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <folio-module-descriptor-validator.version>1.0.0</folio-module-descriptor-validator.version>
+    <folio-module-descriptor-validator.version>1.0.1</folio-module-descriptor-validator.version>
   </properties>
 
   <dependencyManagement>
@@ -81,9 +81,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.tomakehurst</groupId>
+      <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
-      <version>2.19.0</version>
+      <version>3.12.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.10</version>
+      <version>4.5.14</version>
     </dependency>
   </dependencies>
 
@@ -110,7 +110,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version>
+        <version>3.5.2</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
@@ -118,7 +118,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <release>${java.version}</release>
           <encoding>UTF-8</encoding>
