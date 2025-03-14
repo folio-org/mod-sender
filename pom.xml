@@ -22,7 +22,7 @@
     <rest-assured.version>5.5.0</rest-assured.version>
     <ramlfiles_path>${basedir}/ramls</ramlfiles_path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <folio-module-descriptor-validator.version>1.0.0</folio-module-descriptor-validator.version>
+    <folio-module-descriptor-validator.version>1.0.1</folio-module-descriptor-validator.version>
   </properties>
 
   <dependencyManagement>
