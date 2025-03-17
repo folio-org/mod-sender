@@ -1,4 +1,7 @@
-## 2025-03-14 v1.2.0
+## 2025-03-17 v1.14.1
+* Fixed interface versions
+
+## 2025-03-14 v1.14.0
 * Update mod-sender to Java 21([FOLIO-4215](https://folio-org.atlassian.net/browse/FOLIO-4215))
 
 ## 2024-10-31 v1.13.0
