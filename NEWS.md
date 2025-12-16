@@ -1,3 +1,6 @@
+# 2025-12-17 v1.14.2
+* Update to RMB 35.4.1, Vert.x 4.5.22 ([MODSENDER-82](https://folio-org.atlassian.net/browse/MODSENDER-82))
+
 ## 2025-03-17 v1.14.1
 * Fixed interfaces versions
 
