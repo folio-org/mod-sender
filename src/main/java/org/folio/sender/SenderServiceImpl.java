@@ -1,16 +1,14 @@
 package org.folio.sender;
 
 import io.vertx.core.Future;
-import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
-import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.folio.HttpStatus;
 import org.folio.rest.jaxrs.model.Message;
 import org.folio.rest.jaxrs.model.Notification;
 import org.folio.rest.jaxrs.model.User;
@@ -68,18 +66,14 @@ public class SenderServiceImpl implements SenderService {
     okapiHeaders.fillRequestHeaders(request.headers());
     request.putHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
 
-    Promise<HttpResponse<Buffer>> promise = Promise.promise();
-    request.send(promise);
-    return promise.future().map(response -> {
-      switch (response.statusCode()) {
-        case HttpStatus.SC_OK:
-          return response.bodyAsJson(User.class);
-        case HttpStatus.SC_NOT_FOUND:
-          throw new BadRequestException(response.bodyAsString());
-        default:
-          throw new InternalServerErrorException();
-      }
-    });
+    return request.send()
+      .map(response ->
+        switch (response.statusCode()) {
+          case HttpStatus.SC_OK -> response.bodyAsJson(User.class);
+          case HttpStatus.SC_NOT_FOUND -> throw new BadRequestException(response.bodyAsString());
+          default -> throw new InternalServerErrorException();
+        }
+    );
   }
 }
 

@@ -5,9 +5,9 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
-import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.folio.HttpStatus;
 import org.folio.rest.jaxrs.model.EmailEntity;
 import org.folio.rest.jaxrs.model.User;
 
@@ -37,16 +37,16 @@ public class MailDeliveryChannel implements DeliveryChannel {
       HttpRequest<Buffer> request = EmailDeliveryChannel.createRequestAndPrepareHeaders(
           okapiHeadersJson, mailUrlPath, webClient);
 
-      request.sendJson(emailEntity, response -> {
-        if (response.failed()) {
-          LOG.error("deliverMessage:: Error from Mail module {} ", response.cause().getMessage());
-        } else if (response.result().statusCode() != HttpStatus.SC_OK) {
-          String errorMessage = String.format("deliverMessage:: Mail module responded with "
-              + "status '%s' and body '%s'",
-              response.result().statusCode(), response.result().bodyAsString());
-          LOG.error(errorMessage);
-        }
-      });
+      request.sendJson(emailEntity)
+        .onFailure(error -> LOG.error("deliverMessage:: Error from Mail module {} ", error.getMessage()))
+        .onSuccess(response -> {
+          if (response.statusCode() != HttpStatus.SC_OK) {
+            String errorMessage = String.format("deliverMessage:: Mail module responded with "
+                + "status '%s' and body '%s'",
+              response.statusCode(), response.bodyAsString());
+            LOG.error(errorMessage);
+          }
+        });
     } catch (Exception e) {
       LOG.error("deliverMessage:: Error while attempting to "
           + "deliver message to recipient {} ", recipientJson, e);

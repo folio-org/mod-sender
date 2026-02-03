@@ -14,7 +14,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
-import org.apache.http.HttpStatus;
+import org.folio.HttpStatus;
 import org.folio.rest.jaxrs.model.Address;
 import org.folio.rest.jaxrs.model.CustomFields;
 import org.folio.rest.jaxrs.model.Message;
@@ -60,7 +60,8 @@ public class MessageDeliveryTest {
     port = NetworkUtils.nextFreePort();
     DeploymentOptions options = new DeploymentOptions()
       .setConfig(new JsonObject().put("http.port", port));
-    vertx.deployVerticle(RestVerticle.class.getName(), options, context.asyncAssertSuccess());
+    vertx.deployVerticle(RestVerticle.class.getName(), options)
+      .onComplete(context.asyncAssertSuccess());
 
     spec = new RequestSpecBuilder()
       .setContentType(ContentType.JSON)
@@ -70,13 +71,13 @@ public class MessageDeliveryTest {
   }
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     mockUrlHeader = new Header(OkapiHeaders.OKAPI_URL, "http://localhost:" + mockServer.port());
   }
 
   @AfterClass
   public static void tearDown(TestContext context) {
-    vertx.close(context.asyncAssertSuccess());
+    vertx.close().onComplete(context.asyncAssertSuccess());
   }
 
   @Test
@@ -88,7 +89,7 @@ public class MessageDeliveryTest {
       .when()
       .post(MESSAGE_DELIVERY_PATH)
       .then()
-      .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY);
+      .statusCode(HttpStatus.SC_UNPROCESSABLE_CONTENT);
   }
 
   @Test
