@@ -1,3 +1,6 @@
+## 2026-XX-XX v1.15.0-SNAPSHOT
+* Upgrade module to Vert.x 5.0 ([MODSENDER-78](https://folio-org.atlassian.net/browse/MODSENDER-78))
+
 ## 2025-03-14 v1.2.0
 * Update mod-sender to Java 21([FOLIO-4215](https://folio-org.atlassian.net/browse/FOLIO-4215))
 
