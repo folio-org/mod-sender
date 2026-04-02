@@ -35,7 +35,7 @@ public class SenderServiceImpl implements SenderService {
   }
 
   public Future<Void> sendNotification(Notification notification, OkapiHeaders okapiHeaders) {
-    log.debug("sendNotification:: notificationId {}, recipientUserId {}", notification.getNotificationId(), notification.getRecipientUserId());
+    log.debug("sendNotification:: processing notificationId {}", notification.getNotificationId());
     validateDeliveryChannels(notification.getMessages());
     return lookupUser(notification.getRecipientUserId(), okapiHeaders)
       .compose(user -> {
@@ -49,7 +49,6 @@ public class SenderServiceImpl implements SenderService {
   }
 
   private void validateDeliveryChannels(List<Message> messages) {
-    log.debug("validateDeliveryChannels:: validating messages {} ", messages);
     for (Message message : messages) {
       if (!deliveryChannelFactory.supportsDeliveryChannel(message.getDeliveryChannel())) {
         String errorMessage = String.format("validateDeliveryChannels:: Delivery channel '%s' is not supported", message.getDeliveryChannel());
@@ -60,7 +59,7 @@ public class SenderServiceImpl implements SenderService {
   }
 
   private Future<User> lookupUser(String userId, OkapiHeaders okapiHeaders) {
-    log.debug("lookupUser:: Fetching user details for userId {}", userId);
+    log.debug("lookupUser:: Fetching user details");
     String url = okapiHeaders.getOkapiUrl() + "/users/" + userId;
     HttpRequest<Buffer> request = webClient.getAbs(url);
     okapiHeaders.fillRequestHeaders(request.headers());
@@ -76,4 +75,3 @@ public class SenderServiceImpl implements SenderService {
     );
   }
 }
-

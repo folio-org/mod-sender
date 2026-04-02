@@ -26,8 +26,9 @@ public class MailDeliveryChannel implements DeliveryChannel {
   @Override
   public void deliverMessage(String notificationId, JsonObject recipientJson,
                              JsonObject message, JsonObject okapiHeadersJson) {
-    LOG.debug("deliverMessage:: Sending message to recipient {} with message {}",
-        recipientJson, message);
+    String deliveryChannel = message.getString("deliveryChannel");
+    LOG.debug("deliverMessage:: Sending message for notificationId {} using channel {}",
+      notificationId, deliveryChannel);
     try {
       User recipient = recipientJson.mapTo(User.class);
       EmailEntity emailEntity = message.mapTo(EmailEntity.class);
@@ -38,18 +39,19 @@ public class MailDeliveryChannel implements DeliveryChannel {
           okapiHeadersJson, mailUrlPath, webClient);
 
       request.sendJson(emailEntity)
-        .onFailure(error -> LOG.error("deliverMessage:: Error from Mail module {} ", error.getMessage()))
+        .onFailure(error -> LOG.error("deliverMessage:: Error from Mail module for notificationId {}",
+          notificationId, error))
         .onSuccess(response -> {
           if (response.statusCode() != HttpStatus.SC_OK) {
             String errorMessage = String.format("deliverMessage:: Mail module responded with "
-                + "status '%s' and body '%s'",
-              response.statusCode(), response.bodyAsString());
+                + "status '%s' for notificationId '%s'",
+              response.statusCode(), notificationId);
             LOG.error(errorMessage);
           }
         });
     } catch (Exception e) {
-      LOG.error("deliverMessage:: Error while attempting to "
-          + "deliver message to recipient {} ", recipientJson, e);
+      LOG.error("deliverMessage:: Error while attempting to deliver notificationId {} using channel {}",
+        notificationId, deliveryChannel, e);
     }
   }
 
