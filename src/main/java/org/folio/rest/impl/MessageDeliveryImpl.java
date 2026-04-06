@@ -38,7 +38,7 @@ public class MessageDeliveryImpl implements MessageDelivery {
                                   Handler<AsyncResult<Response>> asyncResultHandler,
                                   Context vertxContext) {
     try {
-      log.info("postMessageDelivery:: sending Notification for notificationId {}, recipientUserId {} ", entity.getNotificationId(), entity.getRecipientUserId());
+      log.info("postMessageDelivery:: sending notificationId {}", entity.getNotificationId());
       OkapiHeaders headers = new OkapiHeaders(okapiHeaders);
       headers.setTenant(tenantId);
       senderService.sendNotification(entity, headers)
@@ -47,7 +47,7 @@ public class MessageDeliveryImpl implements MessageDelivery {
         .otherwise(ExceptionHelper::handleException)
         .onComplete(asyncResultHandler);
     } catch (Exception e) {
-      log.warn("postMessageDelivery:: Error in sending Notification for recipientId {}", entity.getRecipientUserId(), e);
+      log.warn("postMessageDelivery:: Error sending notificationId {}", entity.getNotificationId(), e);
       asyncResultHandler.handle(Future.succeededFuture(
         ExceptionHelper.handleException(e)));
     }
