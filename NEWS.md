@@ -1,7 +1,24 @@
-## 2026-XX-XX v1.15.0-SNAPSHOT
+## v1.15.0 2026-04-16
+
+### Features
 * Upgrade module to Vert.x 5.0 ([MODSENDER-78](https://folio-org.atlassian.net/browse/MODSENDER-78))
 
-## 2025-03-14 v1.2.0
+### Bug fixes
+* Fix Incorrect interface version for `batch-print` v1.1 -> 1.0 ([MODSENDER-79](https://folio-org.atlassian.net/browse/MODSENDER-79))
+
+### Tech Debt
+* Sensitive data clean up ([MODSENDER-74](https://folio-org.atlassian.net/browse/MODSENDER-74))
+* Migrate to GA maven-based workflows ([MODSENDER-83](https://folio-org.atlassian.net/browse/MODSENDER-83)
+
+### Dependencies
+* Bump `raml-module-builder` from `35.4.1` to `36.0.0`
+* Bump `vertx` from `4.5.22` to `5.0.6`
+* Bump `log4j` from `2.24.0` to `2.25.2`
+* Bump `rest-assured` from `5.5.0` to `6.0.0`
+* Bump `aspectj` from `1.9.22.1` to `1.9.25.1`
+* Bump `wiremock` to `3.12.1`
+
+## 2025-03-14 v1.14.0
 * Update mod-sender to Java 21([FOLIO-4215](https://folio-org.atlassian.net/browse/FOLIO-4215))
 
 ## 2024-10-31 v1.13.0
