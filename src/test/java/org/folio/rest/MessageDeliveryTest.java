@@ -428,65 +428,6 @@ public class MessageDeliveryTest {
     awaitWireMockVerify(() -> WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify"))));
   }
 
-  @Test
-  public void sendTextNotify_negative_noPersonal() {
-    var mockRecipient = new User()
-      .withId(UUID.randomUUID().toString());
-
-    mockUserModule(mockRecipient.getId(), mockRecipient);
-
-    var textNotifyMessage = new Message()
-      .withDeliveryChannel("text-notify")
-      .withBody("You have a new notification");
-
-    var notification = new Notification()
-      .withNotificationId(UUID.randomUUID().toString())
-      .withRecipientUserId(mockRecipient.getId())
-      .withMessages(Collections.singletonList(textNotifyMessage));
-
-    var responseBody = RestAssured.given()
-      .spec(spec)
-      .header(mockUrlHeader)
-      .body(toJson(notification))
-      .when()
-      .post(MESSAGE_DELIVERY_PATH)
-      .then()
-      .statusCode(HttpStatus.SC_BAD_REQUEST)
-      .extract().asString();
-
-    Assert.assertThat(responseBody, Matchers.containsString("no mobile phone number"));
-  }
-
-  @Test
-  public void sendTextNotify_negative_noMobilePhone() {
-    var mockRecipient = new User()
-      .withId(UUID.randomUUID().toString())
-      .withPersonal(new Personal());
-
-    mockUserModule(mockRecipient.getId(), mockRecipient);
-
-    var textNotifyMessage = new Message()
-      .withDeliveryChannel("text-notify")
-      .withBody("You have a new notification");
-
-    var notification = new Notification()
-      .withNotificationId(UUID.randomUUID().toString())
-      .withRecipientUserId(mockRecipient.getId())
-      .withMessages(Collections.singletonList(textNotifyMessage));
-
-    var responseBody = RestAssured.given()
-      .spec(spec)
-      .header(mockUrlHeader)
-      .body(toJson(notification))
-      .when()
-      .post(MESSAGE_DELIVERY_PATH)
-      .then()
-      .statusCode(HttpStatus.SC_BAD_REQUEST)
-      .extract().asString();
-
-    Assert.assertThat(responseBody, Matchers.containsString("no mobile phone number"));
-  }
-
   private String toJson(Object object) {
     return JsonObject.mapFrom(object).toString();
   }

@@ -1,3 +1,9 @@
+## v1.16.0-SNAPSHOT
+
+### Features
+* Add text-notify delivery channel ([MODSENDER-86](https://folio-org.atlassian.net/browse/MODSENDER-86))
+
+
 ## v1.15.0 2026-04-16
 
 ### Features

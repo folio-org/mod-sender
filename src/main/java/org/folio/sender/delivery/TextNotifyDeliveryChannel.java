@@ -32,7 +32,7 @@ public class TextNotifyDeliveryChannel implements DeliveryChannel {
       var recipient = recipientJson.mapTo(User.class);
       var textNotifyEntity = message.mapTo(TextNotifyEntity.class);
       textNotifyEntity.setNotificationId(notificationId);
-      textNotifyEntity.setTo(recipient.getPersonal().getMobilePhone());
+      textNotifyEntity.setTo(recipient.getId());
 
       var request = EmailDeliveryChannel.createRequestAndPrepareHeaders(okapiHeadersJson, textNotifyUrlPath, webClient);
 

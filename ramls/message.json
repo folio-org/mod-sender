@@ -6,7 +6,7 @@
   "properties": {
     "deliveryChannel": {
       "type": "string",
-      "description": "Type of channel; Examples: 'email', 'text-notify'; Should be supported by the module"
+      "description": "Type of channel; Examples: 'email', 'sms'; Should be supported by the module"
     },
     "from": {
       "type": "string",

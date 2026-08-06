@@ -9,7 +9,7 @@
       "type": "string"
     },
     "to": {
-      "description": "recipient mobile phone number",
+      "description": "recipient user ID",
       "type": "string"
     },
     "body": {
