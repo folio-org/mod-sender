@@ -39,6 +39,7 @@ public class SenderServiceImpl implements SenderService {
     validateDeliveryChannels(notification.getMessages());
     return lookupUser(notification.getRecipientUserId(), okapiHeaders)
       .compose(user -> {
+        validateRecipientForTextNotify(notification.getMessages(), user);
         for (Message message : notification.getMessages()) {
           DeliveryChannel deliveryChannelProxy = deliveryChannelFactory.createProxy(message.getDeliveryChannel());
           deliveryChannelProxy.deliverMessage(notification.getNotificationId(), JsonObject.mapFrom(user),
@@ -55,6 +56,19 @@ public class SenderServiceImpl implements SenderService {
         log.warn(errorMessage);
         throw new BadRequestException(errorMessage);
       }
+    }
+  }
+
+  private void validateRecipientForTextNotify(List<Message> messages, User user) {
+    var hasTextNotifyMessage = messages.stream()
+      .anyMatch(m -> "text-notify".equals(m.getDeliveryChannel()));
+    if (!hasTextNotifyMessage) {
+      return;
+    }
+
+    var personal = user.getPersonal();
+    if (personal == null || personal.getMobilePhone() == null || personal.getMobilePhone().isBlank()) {
+      throw new BadRequestException("validateRecipientForTextNotify:: Recipient user has no mobile phone number");
     }
   }
 

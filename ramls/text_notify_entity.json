@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "The message to be sent via text-notify channel",
+  "title": "Text Notify Entity Schema",
+  "type": "object",
+  "properties": {
+    "notificationId": {
+      "description": "notification identifier",
+      "type": "string"
+    },
+    "to": {
+      "description": "recipient mobile phone number",
+      "type": "string"
+    },
+    "body": {
+      "description": "text message content",
+      "type": "string"
+    }
+  },
+  "required": [
+    "notificationId",
+    "to",
+    "body"
+  ]
+}

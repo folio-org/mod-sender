@@ -361,6 +361,129 @@ public class MessageDeliveryTest {
       .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
+  @Test
+  public void sendTextNotify_positive() {
+    var mockRecipient = new User()
+      .withId(UUID.randomUUID().toString())
+      .withPersonal(new Personal().withMobilePhone("+1234567890"));
+
+    mockUserModule(mockRecipient.getId(), mockRecipient);
+    mockTextNotifyModule();
+
+    var textNotifyMessage = new Message()
+      .withDeliveryChannel("text-notify")
+      .withBody("You have a new notification");
+
+    var notification = new Notification()
+      .withNotificationId(UUID.randomUUID().toString())
+      .withRecipientUserId(mockRecipient.getId())
+      .withMessages(Collections.singletonList(textNotifyMessage));
+
+    RestAssured.given()
+      .spec(spec)
+      .header(mockUrlHeader)
+      .body(toJson(notification))
+      .when()
+      .post(MESSAGE_DELIVERY_PATH)
+      .then()
+      .statusCode(HttpStatus.SC_NO_CONTENT);
+
+    WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId())));
+    WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify")));
+  }
+
+  @Test
+  public void sendTextNotify_positive_downstreamError() {
+    var mockRecipient = new User()
+      .withId(UUID.randomUUID().toString())
+      .withPersonal(new Personal().withMobilePhone("+1234567890"));
+
+    mockUserModule(mockRecipient.getId(), mockRecipient);
+    WireMock.stubFor(WireMock.post("/text-notify").willReturn(WireMock.badRequest()));
+
+    var textNotifyMessage = new Message()
+      .withDeliveryChannel("text-notify")
+      .withBody("You have a new notification");
+
+    var notification = new Notification()
+      .withNotificationId(UUID.randomUUID().toString())
+      .withRecipientUserId(mockRecipient.getId())
+      .withMessages(Collections.singletonList(textNotifyMessage));
+
+    RestAssured.given()
+      .spec(spec)
+      .header(mockUrlHeader)
+      .body(toJson(notification))
+      .when()
+      .post(MESSAGE_DELIVERY_PATH)
+      .then()
+      .statusCode(HttpStatus.SC_NO_CONTENT);
+
+    WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId())));
+    WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify")));
+  }
+
+  @Test
+  public void sendTextNotify_negative_noPersonal() {
+    var mockRecipient = new User()
+      .withId(UUID.randomUUID().toString());
+
+    mockUserModule(mockRecipient.getId(), mockRecipient);
+
+    var textNotifyMessage = new Message()
+      .withDeliveryChannel("text-notify")
+      .withBody("You have a new notification");
+
+    var notification = new Notification()
+      .withNotificationId(UUID.randomUUID().toString())
+      .withRecipientUserId(mockRecipient.getId())
+      .withMessages(Collections.singletonList(textNotifyMessage));
+
+    var responseBody = RestAssured.given()
+      .spec(spec)
+      .header(mockUrlHeader)
+      .body(toJson(notification))
+      .when()
+      .post(MESSAGE_DELIVERY_PATH)
+      .then()
+      .statusCode(HttpStatus.SC_BAD_REQUEST)
+      .extract().asString();
+
+    Assert.assertThat(responseBody, Matchers.containsString("no mobile phone number"));
+  }
+
+  @Test
+  public void sendTextNotify_negative_noMobilePhone() {
+    var mockRecipient = new User()
+      .withId(UUID.randomUUID().toString())
+      .withPersonal(new Personal());
+
+    mockUserModule(mockRecipient.getId(), mockRecipient);
+
+    var textNotifyMessage = new Message()
+      .withDeliveryChannel("text-notify")
+      .withBody("You have a new notification");
+
+    var notification = new Notification()
+      .withNotificationId(UUID.randomUUID().toString())
+      .withRecipientUserId(mockRecipient.getId())
+      .withMessages(Collections.singletonList(textNotifyMessage));
+
+    var responseBody = RestAssured.given()
+      .spec(spec)
+      .header(mockUrlHeader)
+      .body(toJson(notification))
+      .when()
+      .post(MESSAGE_DELIVERY_PATH)
+      .then()
+      .statusCode(HttpStatus.SC_BAD_REQUEST)
+      .extract().asString();
+
+    Assert.assertThat(responseBody, Matchers.containsString("no mobile phone number"));
+  }
+
   private String toJson(Object object) {
     return JsonObject.mapFrom(object).toString();
   }
@@ -373,6 +496,10 @@ public class MessageDeliveryTest {
   private void mockMailModule() {
     WireMock.stubFor(WireMock.post("/mail")
       .willReturn(WireMock.ok()));
+  }
+
+  private void mockTextNotifyModule() {
+    WireMock.stubFor(WireMock.post("/text-notify").willReturn(WireMock.ok()));
   }
 
   private void mockUserModule(String userId, User response) {
