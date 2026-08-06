@@ -14,6 +14,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import static org.awaitility.Awaitility.await;
 import org.folio.HttpStatus;
 import org.folio.rest.jaxrs.model.Address;
 import org.folio.rest.jaxrs.model.CustomFields;
@@ -32,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.MediaType;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
@@ -151,8 +153,8 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
   }
 
   @Test
@@ -189,10 +191,10 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
-    WireMock.verify(2, WireMock.postRequestedFor(
-      WireMock.urlMatching("/mail")));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
+    awaitWireMockVerify(() -> WireMock.verify(2, WireMock.postRequestedFor(
+      WireMock.urlMatching("/mail"))));
   }
 
   @Test
@@ -224,10 +226,10 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
-    WireMock.verify(1, WireMock.postRequestedFor(
-      WireMock.urlMatching("/mail")));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.postRequestedFor(
+      WireMock.urlMatching("/mail"))));
   }
 
   @Test
@@ -259,10 +261,10 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
-    WireMock.verify(1, WireMock.postRequestedFor(
-      WireMock.urlMatching("/mail")));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.postRequestedFor(
+      WireMock.urlMatching("/mail"))));
   }
 
   @Test
@@ -305,8 +307,8 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
   }
 
   @Test
@@ -324,6 +326,7 @@ public class MessageDeliveryTest {
     mockUserModule(mockRecipient.getId(), mockRecipient);
     WireMock.stubFor(WireMock.post("/email")
       .willReturn(WireMock.badRequest()));
+    String recipientId = mockRecipient.getId();
 
     Message emailChannel = new Message()
       .withDeliveryChannel("email")
@@ -345,8 +348,8 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + recipientId))));
 
     mockRecipient = mockRecipient.withPersonal(null);
     mockUserModule(mockRecipient.getId(), mockRecipient);
@@ -388,9 +391,9 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
-    WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify")));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify"))));
   }
 
   @Test
@@ -420,9 +423,9 @@ public class MessageDeliveryTest {
       .then()
       .statusCode(HttpStatus.SC_NO_CONTENT);
 
-    WireMock.verify(1, WireMock.getRequestedFor(
-      WireMock.urlMatching("/users/" + mockRecipient.getId())));
-    WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify")));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.getRequestedFor(
+      WireMock.urlMatching("/users/" + mockRecipient.getId()))));
+    awaitWireMockVerify(() -> WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlMatching("/text-notify"))));
   }
 
   @Test
@@ -505,5 +508,9 @@ public class MessageDeliveryTest {
   private void mockUserModule(String userId, User response) {
     WireMock.stubFor(WireMock.get("/users/" + userId)
       .willReturn(WireMock.okJson(JsonObject.mapFrom(response).toString())));
+  }
+
+  private void awaitWireMockVerify(Runnable verification) {
+    await().atMost(Duration.ofSeconds(5)).untilAsserted(verification::run);
   }
 }
