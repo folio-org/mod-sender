@@ -21,7 +21,7 @@ public class DeliveryVerticle extends AbstractVerticle {
       new EmailDeliveryChannel(vertx, "/email"));
     registerDeliveryChannel("mail", "delivery-channel.mail.queue", vertx,
       new MailDeliveryChannel(vertx, "/mail"));
-    registerDeliveryChannel("text-notify", "delivery-channel.text-notify.queue", vertx,
+    registerDeliveryChannel("sms", "delivery-channel.sms.queue", vertx,
       new TextNotifyDeliveryChannel(vertx, "/text-notify"));
 
     startPromise.handle(Future.succeededFuture());

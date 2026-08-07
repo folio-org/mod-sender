@@ -33,6 +33,10 @@ Request body example:
       "header": "Your FOLIO password changed",
       "body": "Dear Alex, Your password has been changed.",
       "outputFormat": "text/plain"
+    },
+    {
+      "deliveryChannel": "sms",
+      "body": "Dear Alex, Your password has been changed."
     }
   ]
 }

@@ -374,7 +374,7 @@ public class MessageDeliveryTest {
     mockTextNotifyModule();
 
     var textNotifyMessage = new Message()
-      .withDeliveryChannel("text-notify")
+      .withDeliveryChannel("sms")
       .withBody("You have a new notification");
 
     var notification = new Notification()
@@ -406,7 +406,7 @@ public class MessageDeliveryTest {
     WireMock.stubFor(WireMock.post("/text-notify").willReturn(WireMock.badRequest()));
 
     var textNotifyMessage = new Message()
-      .withDeliveryChannel("text-notify")
+      .withDeliveryChannel("sms")
       .withBody("You have a new notification");
 
     var notification = new Notification()
