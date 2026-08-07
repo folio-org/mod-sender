@@ -36,7 +36,7 @@ Request body example:
     },
     {
       "deliveryChannel": "sms",
-      "body": "Dear Alex, Your password has been changed."
+      "body": "Item with hrid1234 is ready for pickup at: sample-library-branch"
     }
   ]
 }
