@@ -33,6 +33,10 @@ Request body example:
       "header": "Your FOLIO password changed",
       "body": "Dear Alex, Your password has been changed.",
       "outputFormat": "text/plain"
+    },
+    {
+      "deliveryChannel": "sms",
+      "body": "Item with hrid1234 is ready for pickup at: sample-library-branch"
     }
   ]
 }

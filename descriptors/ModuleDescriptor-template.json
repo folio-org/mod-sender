@@ -15,6 +15,12 @@
       "version" : "1.0"
     }
   ],
+  "optional": [
+    {
+      "id": "text-notify",
+      "version": "1.0"
+    }
+  ],
   "provides": [
     {
       "id": "message-delivery",
@@ -24,7 +30,12 @@
           "methods": ["POST"],
           "pathPattern": "/message-delivery",
           "permissionsRequired": ["sender.message-delivery.post"],
-          "modulePermissions": ["email.message.post", "batch-print.entries.mail.post", "users.item.get" ]
+          "modulePermissions": [
+            "email.message.post",
+            "batch-print.entries.mail.post",
+            "users.item.get",
+            "text-notify.message.post"
+          ]
         }
       ]
     }
